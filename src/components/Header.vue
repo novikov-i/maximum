@@ -3,10 +3,15 @@
     <div class="header__logo">
       logo
     </div>
+
     <div>
-      <select>
-        <option>
-          1
+      <select v-model="courseId" @change="selectСourse($event)">
+        <option
+          v-for="course in courses"
+          v-bind:value="course.id"
+          :key="course.id"
+        >
+          {{ course.name }}
         </option>
       </select>
     </div>
@@ -14,7 +19,27 @@
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    courses: {
+      type: Array,
+      default: () => []
+    }
+  },
+
+  data() {
+    return {
+      courseId: null
+    };
+  },
+
+  methods: {
+    selectСourse(event) {
+      const courseId = event.target.value;
+      this.$emit("selectCourse", courseId);
+    }
+  }
+};
 </script>
 
 <style lang="scss">
@@ -22,12 +47,11 @@ export default {};
   display: flex;
   align-items: center;
   height: 50px;
-  background-color: #4a76a8;
   color: #fff;
+  background-color: #4a76a8;
 
   &__logo {
     width: 200px;
-    // margin: 0 auto;
     text-align: center;
     text-transform: uppercase;
   }
